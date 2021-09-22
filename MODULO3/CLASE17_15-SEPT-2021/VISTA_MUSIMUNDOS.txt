@@ -1,0 +1,15 @@
+use musimundos;
+ALTER VIEW vw_canciones AS
+
+select 
+    LEFT(UPPER(nombre),10) as 'Nombre Cancion'
+    , SEC_TO_TIME(ROUND(milisegundos/1000)) as minutos -- 00:05:10
+    , ROUND(bytes/1000) as Kbytes
+    , CONCAT('$',FORMAT(precio_unitario,3)) Precio
+    , CASE 
+        WHEN compositor is null or compositor = '' THEN '<Sin Datos>'
+        WHEN compositor like '%,%' THEN LEFT(compositor,LOCATE(',',compositor)-1)
+        ELSE
+            compositor
+     END compositor
+from canciones;
